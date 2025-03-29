@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Procore OAuth Callback</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        padding: 50px;
+        background-color: #f8f9fa;
+      }
+      .callback-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        text-align: center;
+      }
+      .success-icon {
+        font-size: 4rem;
+        color: #28a745;
+        margin-bottom: 20px;
+      }
+      .error-icon {
+        font-size: 4rem;
+        color: #dc3545;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="callback-container">
+      <div id="loading">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <h3 class="mt-3">Processing Authentication...</h3>
+        <p class="text-muted">
+          Please wait while we complete the authentication process.
+        </p>
+      </div>
+
+      <div id="success" style="display: none">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 class="text-success">Authentication Successful!</h3>
+        <p>You have successfully authenticated with Procore.</p>
+        <p class="mt-4">
+          <button id="returnBtn" class="btn btn-primary">
+            Return to Dashboard
+          </button>
+        </p>
+      </div>
+
+      <div id="error" style="display: none">
+        <div class="error-icon">
+          <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <h3 class="text-danger">Authentication Failed</h3>
+        <p id="errorMessage" class="text-muted">
+          An error occurred during the authentication process.
+        </p>
+        <p class="mt-4">
+          <button id="retryBtn" class="btn btn-primary">Try Again</button>
+        </p>
+      </div>
+    </div>
+
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Parse query parameters from URL
+        const queryParams = new URLSearchParams(window.location.search);
+        const code = queryParams.get("code");
+        const error = queryParams.get("error");
+        const errorDescription = queryParams.get("error_description");
+
+        // Setup button event listeners
+        document
+          .getElementById("returnBtn")
+          .addEventListener("click", function () {
+            window.location.href = "index.html";
+          });
+
+        document
+          .getElementById("retryBtn")
+          .addEventListener("click", function () {
+            window.location.href = "index.html";
+          });
+
+        // Process authentication response
+        setTimeout(function () {
+          // Hide loading
+          document.getElementById("loading").style.display = "none";
+
+          if (error) {
+            // Show error
+            document.getElementById("error").style.display = "block";
+            document.getElementById("errorMessage").textContent =
+              errorDescription ||
+              "An error occurred during the authentication process.";
+          } else if (code) {
+            // In a real implementation, this would exchange the authorization code for an access token
+            // For this simulation, we'll just show success
+            document.getElementById("success").style.display = "block";
+
+            // Store authentication flag in localStorage
+            localStorage.setItem("procoreAuthenticated", "true");
+          } else {
+            // Show error for missing code
+            document.getElementById("error").style.display = "block";
+            document.getElementById("errorMessage").textContent =
+              "No authorization code received.";
+          }
+        }, 2000); // Simulate processing delay
+      });
+    </script>
+  </body>
+</html>

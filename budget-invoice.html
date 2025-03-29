@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Budget & Invoices - Construction CRM</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Chart.js -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar p-0">
+          <div class="d-flex flex-column p-3">
+            <a
+              href="index.html"
+              class="d-flex align-items-center mb-3 text-decoration-none text-white"
+            >
+              <i class="fas fa-hard-hat me-2 fs-4"></i>
+              <span class="fs-4">ConCRM</span>
+            </a>
+            <hr />
+            <ul class="nav nav-pills flex-column mb-auto">
+              <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                  <i class="fas fa-tachometer-alt me-2"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li>
+                <a href="project-schedule.html" class="nav-link">
+                  <i class="fas fa-tasks me-2"></i>
+                  Project Schedule
+                </a>
+              </li>
+              <li>
+                <a href="budget-invoice.html" class="nav-link active">
+                  <i class="fas fa-file-invoice-dollar me-2"></i>
+                  Budget & Invoices
+                </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link">
+                  <i class="fas fa-users me-2"></i>
+                  Team
+                </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link">
+                  <i class="fas fa-cog me-2"></i>
+                  Settings
+                </a>
+              </li>
+            </ul>
+            <hr />
+            <div class="dropdown">
+              <a
+                href="#"
+                class="d-flex align-items-center text-decoration-none dropdown-toggle text-white"
+                id="dropdownUser1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src="https://via.placeholder.com/32"
+                  alt="User"
+                  width="32"
+                  height="32"
+                  class="rounded-circle me-2"
+                />
+                <strong>Admin User</strong>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-dark text-small shadow"
+                aria-labelledby="dropdownUser1"
+              >
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10 main-content">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Budget & Invoices</h1>
+            <div>
+              <button
+                class="btn btn-outline-secondary me-2"
+                id="exportBudgetBtn"
+              >
+                <i class="fas fa-file-export me-2"></i>Export
+              </button>
+              <button class="btn btn-primary" id="refreshBudgetBtn">
+                <i class="fas fa-sync-alt me-2"></i>Refresh Data
+              </button>
+            </div>
+          </div>
+
+          <!-- Project Selection -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-6">
+                  <h5 class="card-title">Project</h5>
+                  <select id="projectSelector" class="form-select">
+                    <option selected>Select a project...</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <div class="btn-group float-end" role="group">
+                    <button
+                      id="viewBudgetBtn"
+                      type="button"
+                      class="btn btn-outline-primary active"
+                    >
+                      Budget Overview
+                    </button>
+                    <button
+                      id="viewInvoicesBtn"
+                      type="button"
+                      class="btn btn-outline-primary"
+                    >
+                      Invoices
+                    </button>
+                    <button
+                      id="viewAiaFormsBtn"
+                      type="button"
+                      class="btn btn-outline-primary"
+                    >
+                      AIA Forms
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Budget Overview Section -->
+          <div id="budgetOverviewSection">
+            <!-- Budget Metrics -->
+            <div class="row mb-4">
+              <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h5 class="card-title">Total Budget</h5>
+                        <h2 id="totalBudgetAmount">$0.00</h2>
+                      </div>
+                      <div>
+                        <i class="fas fa-dollar-sign fa-3x opacity-50"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-success text-white">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h5 class="card-title">Committed</h5>
+                        <h2 id="committedAmount">$0.00</h2>
+                      </div>
+                      <div>
+                        <i class="fas fa-file-signature fa-3x opacity-50"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-info text-white">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h5 class="card-title">Spent to Date</h5>
+                        <h2 id="spentToDateAmount">$0.00</h2>
+                      </div>
+                      <div>
+                        <i class="fas fa-chart-line fa-3x opacity-50"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h5 class="card-title">Remaining</h5>
+                        <h2 id="remainingAmount">$0.00</h2>
+                      </div>
+                      <div>
+                        <i class="fas fa-wallet fa-3x opacity-50"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Budget Charts -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header">
+                    <h5 class="card-title mb-0">
+                      Budget Allocation by Division
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-container">
+                      <canvas id="budgetAllocationChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header">
+                    <h5 class="card-title mb-0">Budget vs. Actual Cost</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-container">
+                      <canvas id="budgetVsActualChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Budget Table -->
+            <div class="card">
+              <div
+                class="card-header d-flex justify-content-between align-items-center"
+              >
+                <h5 class="card-title mb-0">Project Budget Details</h5>
+                <div class="input-group" style="width: 250px">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search budget items..."
+                    id="budgetSearchInput"
+                  />
+                  <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table
+                    class="table table-hover budget-table"
+                    id="budgetTable"
+                  >
+                    <thead>
+                      <tr>
+                        <th style="width: 8%">Cost Code</th>
+                        <th style="width: 30%">Description</th>
+                        <th class="number-cell" style="width: 12%">
+                          Original Budget
+                        </th>
+                        <th class="number-cell" style="width: 12%">
+                          Change Orders
+                        </th>
+                        <th class="number-cell" style="width: 12%">
+                          Current Budget
+                        </th>
+                        <th class="number-cell" style="width: 12%">
+                          Committed
+                        </th>
+                        <th class="number-cell" style="width: 12%">
+                          Spent to Date
+                        </th>
+                        <th class="number-cell" style="width: 12%">
+                          Remaining
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Budget data will be populated here via JavaScript -->
+                      <tr>
+                        <td colspan="10" class="text-center">
+                          Select a project to view budget data
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr class="table-dark">
+                        <th colspan="2">Total</th>
+                        <th class="number-cell" id="totalOriginalBudget">
+                          $0.00
+                        </th>
+                        <th class="number-cell" id="totalChangeOrders">
+                          $0.00
+                        </th>
+                        <th class="number-cell" id="totalCurrentBudget">
+                          $0.00
+                        </th>
+                        <th class="number-cell" id="totalCommitted">$0.00</th>
+                        <th class="number-cell" id="totalSpentToDate">$0.00</th>
+                        <th class="number-cell" id="totalRemaining">$0.00</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Invoices Section -->
+          <div id="invoicesSection" style="display: none">
+            <div class="row mb-4">
+              <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h5 class="card-title">Total Invoiced</h5>
+                        <h2 id="totalInvoicedAmount">$0.00</h2>
+                      </div>
+                      <div>
+                        <i class="fas fa-file-invoice fa-3x opacity-50"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-success text-white">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h5 class="card-title">Paid Amount</h5>
+                        <h2 id="paidAmount">$0.00</h2>
+                      </div>
+                      <div>
+                        <i class="fas fa-check-circle fa-3x opacity-50"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h5 class="card-title">Outstanding</h5>
+                        <h2 id="outstandingAmount">$0.00</h2>
+                      </div>
+                      <div>
+                        <i
+                          class="fas fa-exclamation-circle fa-3x opacity-50"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-info text-white">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h5 class="card-title">Retainage</h5>
+                        <h2 id="retainageAmount">$0.00</h2>
+                      </div>
+                      <div>
+                        <i class="fas fa-piggy-bank fa-3x opacity-50"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mb-4">
+              <div
+                class="card-header d-flex justify-content-between align-items-center"
+              >
+                <h5 class="card-title mb-0">Invoices</h5>
+                <button
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#createInvoiceModal"
+                >
+                  <i class="fas fa-plus me-2"></i>Create Invoice
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover" id="invoicesTable">
+                    <thead>
+                      <tr>
+                        <th style="width: 10%">Invoice #</th>
+                        <th style="width: 15%">Date</th>
+                        <th style="width: 15%">Due Date</th>
+                        <th style="width: 15%">Amount</th>
+                        <th style="width: 10%">Retainage</th>
+                        <th style="width: 15%">Status</th>
+                        <th style="width: 20%">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Invoice data will be populated here via JavaScript -->
+                      <tr>
+                        <td colspan="7" class="text-center">
+                          Select a project to view invoices
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header">
+                    <h5 class="card-title mb-0">Invoice Timeline</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-container">
+                      <canvas id="invoiceTimelineChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header">
+                    <h5 class="card-title mb-0">Payment Status</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-container">
+                      <canvas id="paymentStatusChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AIA Forms Section -->
+          <div id="aiaFormsSection" style="display: none">
+            <div class="card mb-4">
+              <div
+                class="card-header d-flex justify-content-between align-items-center"
+              >
+                <h5 class="card-title mb-0">AIA G702/G703 Pay Applications</h5>
+                <button
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#createAiaFormModal"
+                >
+                  <i class="fas fa-plus me-2"></i>Create Pay Application
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover" id="aiaFormsTable">
+                    <thead>
+                      <tr>
+                        <th style="width: 15%">Application #</th>
+                        <th style="width: 15%">Period To</th>
+                        <th style="width: 20%">Application Date</th>
+                        <th style="width: 15%">Amount Due</th>
+                        <th style="width: 15%">Status</th>
+                        <th style="width: 20%">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- AIA Form data will be populated here via JavaScript -->
+                      <tr>
+                        <td colspan="6" class="text-center">
+                          Select a project to view pay applications
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- AIA Form Preview -->
+            <div id="aiaFormPreview" style="display: none">
+              <div
+                class="d-flex justify-content-between align-items-center mb-3"
+              >
+                <h3>
+                  Pay Application <span id="previewApplicationNumber"></span>
+                </h3>
+                <div>
+                  <button
+                    class="btn btn-outline-secondary me-2"
+                    id="printAiaBtn"
+                  >
+                    <i class="fas fa-print me-2"></i>Print
+                  </button>
+                  <button
+                    class="btn btn-outline-primary"
+                    id="downloadAiaPdfBtn"
+                  >
+                    <i class="fas fa-file-pdf me-2"></i>Download PDF
+                  </button>
+                </div>
+              </div>
+
+              <!-- G702 Form -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">
+                    AIA Document G702 - Application and Certificate for Payment
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="aia-form">
+                    <div class="aia-header">
+                      <div class="aia-title">
+                        APPLICATION AND CERTIFICATE FOR PAYMENT
+                      </div>
+                      <div class="aia-subtitle">AIA DOCUMENT G702</div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <div class="mb-2">
+                          <strong>TO OWNER:</strong>
+                          <span id="g702OwnerName"></span>
+                        </div>
+                        <div class="mb-2">
+                          <strong>PROJECT:</strong>
+                          <span id="g702ProjectName"></span>
+                        </div>
+                        <div class="mb-2">
+                          <strong>APPLICATION NO:</strong>
+                          <span id="g702ApplicationNo"></span>
+                        </div>
+                        <div class="mb-2">
+                          <strong>PERIOD TO:</strong>
+                          <span id="g702PeriodTo"></span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="mb-2">
+                          <strong>FROM CONTRACTOR:</strong>
+                          <span id="g702ContractorName"></span>
+                        </div>
+                        <div class="mb-2">
+                          <strong>VIA ARCHITECT:</strong>
+                          <span id="g702ArchitectName"></span>
+                        </div>
+                        <div class="mb-2">
+                          <strong>CONTRACT DATE:</strong>
+                          <span id="g702ContractDate"></span>
+                        </div>
+                        <div class="mb-2">
+                          <strong>CONTRACT FOR:</strong>
+                          <span id="g702ContractFor"></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="table-responsive">
+                      <table class="table table-bordered aia-table mb-3">
+                        <tbody>
+                          <tr>
+                            <td colspan="2">
+                              <strong>1. ORIGINAL CONTRACT SUM</strong>
+                            </td>
+                            <td class="text-end" id="g702OriginalContractSum">
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <strong>2. NET CHANGE BY CHANGE ORDERS</strong>
+                            </td>
+                            <td class="text-end" id="g702NetChangeOrders">
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <strong
+                                >3. CONTRACT SUM TO DATE (Line 1 ± 2)</strong
+                              >
+                            </td>
+                            <td class="text-end" id="g702ContractSumToDate">
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <strong
+                                >4. TOTAL COMPLETED & STORED TO DATE</strong
+                              >
+                            </td>
+                            <td class="text-end" id="g702TotalCompletedStored">
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2"><strong>5. RETAINAGE</strong></td>
+                            <td class="text-end" id="g702Retainage">$0.00</td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <strong>6. TOTAL EARNED LESS RETAINAGE</strong>
+                            </td>
+                            <td
+                              class="text-end"
+                              id="g702TotalEarnedLessRetainage"
+                            >
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <strong
+                                >7. LESS PREVIOUS CERTIFICATES FOR
+                                PAYMENT</strong
+                              >
+                            </td>
+                            <td
+                              class="text-end"
+                              id="g702LessPreviousCertificates"
+                            >
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <strong>8. CURRENT PAYMENT DUE</strong>
+                            </td>
+                            <td class="text-end" id="g702CurrentPaymentDue">
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <strong
+                                >9. BALANCE TO FINISH, INCLUDING
+                                RETAINAGE</strong
+                              >
+                            </td>
+                            <td class="text-end" id="g702BalanceToFinish">
+                              $0.00
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="table-responsive mb-3">
+                      <table class="table table-bordered aia-table">
+                        <thead>
+                          <tr>
+                            <th colspan="3">CHANGE ORDER SUMMARY</th>
+                            <th>ADDITIONS</th>
+                            <th>DEDUCTIONS</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td colspan="3">
+                              Total changes approved in previous months
+                            </td>
+                            <td class="text-end" id="g702PrevAdditions">
+                              $0.00
+                            </td>
+                            <td class="text-end" id="g702PrevDeductions">
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="3">Total approved this Month</td>
+                            <td class="text-end" id="g702CurrAdditions">
+                              $0.00
+                            </td>
+                            <td class="text-end" id="g702CurrDeductions">
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="3"><strong>TOTALS</strong></td>
+                            <td class="text-end" id="g702TotalAdditions">
+                              $0.00
+                            </td>
+                            <td class="text-end" id="g702TotalDeductions">
+                              $0.00
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="3">
+                              <strong>NET CHANGES BY CHANGE ORDERS</strong>
+                            </td>
+                            <td
+                              colspan="2"
+                              class="text-end"
+                              id="g702NetChanges"
+                            >
+                              $0.00
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="aia-signature">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p><strong>CONTRACTOR'S CERTIFICATION</strong></p>
+                          <p>
+                            The undersigned Contractor certifies that to the
+                            best of the Contractor's knowledge, information and
+                            belief the Work covered by this Application for
+                            Payment has been completed in accordance with the
+                            Contract Documents.
+                          </p>
+                          <div class="mt-4">
+                            <p>
+                              <strong>CONTRACTOR:</strong>
+                              <span id="g702SignatureContractor"></span>
+                            </p>
+                            <p>
+                              <strong>By:</strong> _____________________________
+                              <strong>Date:</strong>
+                              <span id="g702SignatureDate"></span>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <p>
+                            <strong>ARCHITECT'S CERTIFICATE FOR PAYMENT</strong>
+                          </p>
+                          <p>
+                            In accordance with the Contract Documents, based on
+                            on-site observations and the data comprising this
+                            application, the Architect certifies to the Owner
+                            that the Work has progressed as indicated and the
+                            quality of the Work is in accordance with the
+                            Contract Documents.
+                          </p>
+                          <div class="mt-4">
+                            <p>
+                              <strong>ARCHITECT:</strong>
+                              <span id="g702SignatureArchitect"></span>
+                            </p>
+                            <p>
+                              <strong>By:</strong> _____________________________
+                              <strong>Date:</strong>
+                              <span id="g702ArchitectSignatureDate"></span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- G703 Form -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">
+                    AIA Document G703 - Continuation Sheet
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="aia-form">
+                    <div class="aia-header">
+                      <div class="aia-title">CONTINUATION SHEET</div>
+                      <div class="aia-subtitle">AIA DOCUMENT G703</div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <div class="mb-2">
+                          <strong>APPLICATION NO:</strong>
+                          <span id="g703ApplicationNo"></span>
+                        </div>
+                        <div class="mb-2">
+                          <strong>APPLICATION DATE:</strong>
+                          <span id="g703ApplicationDate"></span>
+                        </div>
+                        <div class="mb-2">
+                          <strong>PERIOD TO:</strong>
+                          <span id="g703PeriodTo"></span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="mb-2">
+                          <strong>PROJECT:</strong>
+                          <span id="g703ProjectName"></span>
+                        </div>
+                        <div class="mb-2">
+                          <strong>ARCHITECT'S PROJECT NO:</strong>
+                          <span id="g703ArchitectProjectNo"></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="table-responsive">
+                      <table
+                        class="table table-bordered aia-table"
+                        id="g703Table"
+                      >
+                        <thead>
+                          <tr>
+                            <th rowspan="2" style="width: 5%">A</th>
+                            <th rowspan="2" style="width: 25%">
+                              B<br />DESCRIPTION OF WORK
+                            </th>
+                            <th rowspan="2" style="width: 10%">
+                              C<br />SCHEDULED VALUE
+                            </th>
+                            <th colspan="2" style="width: 20%">
+                              WORK COMPLETED
+                            </th>
+                            <th rowspan="2" style="width: 10%">
+                              E<br />MATERIALS PRESENTLY STORED
+                            </th>
+                            <th rowspan="2" style="width: 10%">
+                              F<br />TOTAL COMPLETED AND STORED TO DATE<br />(D
+                              + E)
+                            </th>
+                            <th rowspan="2" style="width: 10%">
+                              G<br />%<br />(F / C)
+                            </th>
+                            <th rowspan="2" style="width: 10%">
+                              H<br />BALANCE TO FINISH<br />(C - F)
+                            </th>
+                            <th rowspan="2" style="width: 10%">
+                              I<br />RETAINAGE
+                            </th>
+                          </tr>
+                          <tr>
+                            <th>FROM PREVIOUS APPLICATION<br />(D + E)</th>
+                            <th>THIS PERIOD</th>
+                          </tr>
+                        </thead>
+                        <tbody id="g703Body">
+                          <!-- G703 line items will be populated here via JavaScript -->
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th colspan="2">GRAND TOTAL</th>
+                            <th class="text-end" id="g703TotalScheduledValue">
+                              $0.00
+                            </th>
+                            <th class="text-end" id="g703TotalPrevious">
+                              $0.00
+                            </th>
+                            <th class="text-end" id="g703TotalThisPeriod">
+                              $0.00
+                            </th>
+                            <th class="text-end" id="g703TotalMaterialsStored">
+                              $0.00
+                            </th>
+                            <th class="text-end" id="g703TotalCompleted">
+                              $0.00
+                            </th>
+                            <th class="text-end" id="g703TotalPercentage">
+                              0%
+                            </th>
+                            <th class="text-end" id="g703TotalBalance">
+                              $0.00
+                            </th>
+                            <th class="text-end" id="g703TotalRetainage">
+                              $0.00
+                            </th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Invoice Modal -->
+    <div
+      class="modal fade"
+      id="createInvoiceModal"
+      tabindex="-1"
+      aria-labelledby="createInvoiceModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createInvoiceModalLabel">
+              Create Invoice
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="createInvoiceForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="invoiceNumber" class="form-label required"
+                    >Invoice Number</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="invoiceNumber"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="invoiceDate" class="form-label required"
+                    >Invoice Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="invoiceDate"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="invoiceDueDate" class="form-label required"
+                    >Due Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="invoiceDueDate"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="retainagePercentage" class="form-label"
+                    >Retainage Percentage</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="retainagePercentage"
+                      value="5"
+                      min="0"
+                      max="100"
+                    />
+                    <span class="input-group-text">%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="invoiceAmount" class="form-label required"
+                  >Invoice Amount</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="invoiceAmount"
+                    step="0.01"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="invoiceDescription" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="invoiceDescription"
+                  rows="3"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" id="saveInvoiceBtn">
+              Create Invoice
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create AIA Form Modal -->
+    <div
+      class="modal fade"
+      id="createAiaFormModal"
+      tabindex="-1"
+      aria-labelledby="createAiaFormModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createAiaFormModalLabel">
+              Create Pay Application
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="createAiaForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="applicationNumber" class="form-label required"
+                    >Application Number</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="applicationNumber"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="applicationDate" class="form-label required"
+                    >Application Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="applicationDate"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="periodTo" class="form-label required"
+                    >Period To</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="periodTo"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="contractDate" class="form-label"
+                    >Contract Date</label
+                  >
+                  <input type="date" class="form-control" id="contractDate" />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="ownerName" class="form-label">Owner Name</label>
+                  <input type="text" class="form-control" id="ownerName" />
+                </div>
+                <div class="col-md-6">
+                  <label for="architectName" class="form-label"
+                    >Architect Name</label
+                  >
+                  <input type="text" class="form-control" id="architectName" />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="contractFor" class="form-label">Contract For</label>
+                <input type="text" class="form-control" id="contractFor" />
+              </div>
+              <div class="mb-3">
+                <label for="retainagePercentageAia" class="form-label"
+                  >Retainage Percentage</label
+                >
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="retainagePercentageAia"
+                    value="5"
+                    min="0"
+                    max="100"
+                  />
+                  <span class="input-group-text">%</span>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" id="saveAiaFormBtn">
+              Create Pay Application
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!-- Main JavaScript -->
+    <script src="js/procore-api.js"></script>
+    <script src="js/budget-invoice.js"></script>
+  </body>
+</html>

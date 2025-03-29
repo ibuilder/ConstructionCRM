@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Construction CRM Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar p-0">
+          <div class="d-flex flex-column p-3">
+            <a
+              href="index.html"
+              class="d-flex align-items-center mb-3 text-decoration-none text-white"
+            >
+              <i class="fas fa-hard-hat me-2 fs-4"></i>
+              <span class="fs-4">ConCRM</span>
+            </a>
+            <hr />
+            <ul class="nav nav-pills flex-column mb-auto">
+              <li class="nav-item">
+                <a href="index.html" class="nav-link active">
+                  <i class="fas fa-tachometer-alt me-2"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li>
+                <a href="project-schedule.html" class="nav-link">
+                  <i class="fas fa-tasks me-2"></i>
+                  Project Schedule
+                </a>
+              </li>
+              <li>
+                <a href="budget-invoice.html" class="nav-link">
+                  <i class="fas fa-file-invoice-dollar me-2"></i>
+                  Budget & Invoices
+                </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link">
+                  <i class="fas fa-users me-2"></i>
+                  Team
+                </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link">
+                  <i class="fas fa-cog me-2"></i>
+                  Settings
+                </a>
+              </li>
+            </ul>
+            <hr />
+            <div class="dropdown">
+              <a
+                href="#"
+                class="d-flex align-items-center text-decoration-none dropdown-toggle text-white"
+                id="dropdownUser1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src="https://via.placeholder.com/32"
+                  alt="User"
+                  width="32"
+                  height="32"
+                  class="rounded-circle me-2"
+                />
+                <strong>Admin User</strong>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-dark text-small shadow"
+                aria-labelledby="dropdownUser1"
+              >
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10 main-content">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Dashboard</h1>
+            <div>
+              <button id="procoreAuthBtn" class="btn btn-primary">
+                <i class="fas fa-plug me-2"></i>Connect to Procore
+              </button>
+            </div>
+          </div>
+
+          <!-- Project Selection -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-6">
+                  <h5 class="card-title">Select Project</h5>
+                  <select id="projectSelector" class="form-select" disabled>
+                    <option selected>Select a project...</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <div class="d-flex justify-content-end">
+                    <div class="input-group w-75">
+                      <input
+                        type="text"
+                  class="form-control"
+                  id="redirectUri"
+                  value="http://localhost:8000/callback.html"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="procoreAuthSubmit"
+            >
+              Connect
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Main JavaScript -->
+    <script src="js/procore-api.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
+                        class="form-control"
+                        placeholder="Search projects..."
+                      />
+                      <button class="btn btn-outline-secondary" type="button">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card bg-primary text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h5 class="card-title">Active Projects</h5>
+                      <h2 id="activeProjectsCount">-</h2>
+                    </div>
+                    <div>
+                      <i class="fas fa-building fa-3x opacity-50"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-success text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h5 class="card-title">On Schedule</h5>
+                      <h2 id="onScheduleCount">-</h2>
+                    </div>
+                    <div>
+                      <i class="fas fa-calendar-check fa-3x opacity-50"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-warning text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h5 class="card-title">Budget Alert</h5>
+                      <h2 id="budgetAlertCount">-</h2>
+                    </div>
+                    <div>
+                      <i
+                        class="fas fa-exclamation-triangle fa-3x opacity-50"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-info text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h5 class="card-title">Pending Invoices</h5>
+                      <h2 id="pendingInvoicesCount">-</h2>
+                    </div>
+                    <div>
+                      <i class="fas fa-file-invoice fa-3x opacity-50"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Dashboard Cards -->
+          <div class="row">
+            <div class="col-md-6">
+              <div
+                class="card dashboard-card h-100"
+                onclick="window.location.href='project-schedule.html'"
+              >
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <i class="fas fa-tasks me-2"></i>Project Schedule
+                  </h5>
+                  <p class="card-text">
+                    View and manage your project timeline with an interactive
+                    Gantt chart.
+                  </p>
+                  <div class="text-center mt-3">
+                    <img
+                      src="/api/placeholder/500/250"
+                      alt="Gantt Chart Preview"
+                      class="img-fluid rounded"
+                    />
+                  </div>
+                  <div class="mt-3">
+                    <div class="d-flex justify-content-between">
+                      <span>Project Completion</span>
+                      <span id="projectCompletionPercent">-</span>
+                    </div>
+                    <div class="progress mt-2">
+                      <div
+                        id="projectCompletionProgress"
+                        class="progress-bar"
+                        role="progressbar"
+                        style="width: 0%"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <a href="project-schedule.html" class="btn btn-primary"
+                    >View Schedule</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="card dashboard-card h-100"
+                onclick="window.location.href='budget-invoice.html'"
+              >
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <i class="fas fa-file-invoice-dollar me-2"></i>Budget &
+                    Invoices
+                  </h5>
+                  <p class="card-text">
+                    Track project budgets and manage AIA G702/G703 invoices.
+                  </p>
+                  <div class="text-center mt-3">
+                    <img
+                      src="/api/placeholder/500/250"
+                      alt="Budget Chart Preview"
+                      class="img-fluid rounded"
+                    />
+                  </div>
+                  <div class="mt-3">
+                    <div class="d-flex justify-content-between">
+                      <span>Budget Utilization</span>
+                      <span id="budgetUtilizationPercent">-</span>
+                    </div>
+                    <div class="progress mt-2">
+                      <div
+                        id="budgetUtilizationProgress"
+                        class="progress-bar bg-info"
+                        role="progressbar"
+                        style="width: 0%"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <a href="budget-invoice.html" class="btn btn-primary"
+                    >View Budget & Invoices</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activities -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Recent Activities</h5>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush" id="recentActivitiesList">
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <div>
+                    <span class="badge bg-primary rounded-pill me-2">
+                      <i class="fas fa-calendar-alt"></i>
+                    </span>
+                    Connect to Procore to see recent activities
+                  </div>
+                  <span class="text-muted small">-</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Procore Authentication Modal -->
+    <div
+      class="modal fade"
+      id="procoreAuthModal"
+      tabindex="-1"
+      aria-labelledby="procoreAuthModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="procoreAuthModalLabel">
+              Connect to Procore
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="procoreAuthForm">
+              <div class="mb-3">
+                <label for="clientId" class="form-label">Client ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="clientId"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="clientSecret" class="form-label"
+                  >Client Secret</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="clientSecret"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="redirectUri" class="form-label">Redirect URI</label>
+                <input
+                  type="text"
